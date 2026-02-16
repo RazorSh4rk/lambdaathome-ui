@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { RuntimeConfig } from '$lib/types';
-	import { store } from '$lib/store';
+	import { store, apiUrl } from '$lib/store';
 	import Icon from '@iconify/svelte';
 
 	let functions: RuntimeConfig[] = [];
@@ -14,7 +14,7 @@
 	};
 
 	const loadFunctions = () => {
-		fetch('http://localhost:8080/function/list', opts)
+		fetch(`${$apiUrl}/function/list`, opts)
 			.then((res) => res.json())
 			.then((res) => {
 				functions = res.functions || [];
@@ -23,7 +23,7 @@
 	};
 
 	const selectFunction = (name: string) => {
-		fetch(`http://localhost:8080/function/get/${name}`, opts)
+		fetch(`${$apiUrl}/function/get/${name}`, opts)
 			.then((res) => res.json())
 			.then((res) => {
 				selected = res;
@@ -32,7 +32,7 @@
 	};
 
 	const deleteFunction = (name: string) => {
-		fetch(`http://localhost:8080/function/delete/${name}`, {
+		fetch(`${$apiUrl}/function/delete/${name}`, {
 			method: 'DELETE',
 			headers: { Authorization: $store || '' }
 		})

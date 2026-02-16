@@ -22,3 +22,4 @@ const localStore = (key: string, initial: string) => {
 };
 
 export const store = localStore('api-key', '');
+export const apiUrl = localStore('api-url', 'http://localhost:8080');

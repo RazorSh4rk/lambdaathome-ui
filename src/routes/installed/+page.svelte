@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { RuntimeConfig, Container } from '$lib/types';
-	import { store } from '$lib/store';
+	import { store, apiUrl } from '$lib/store';
 	import Icon from '@iconify/svelte';
 
 	let runtimes: string[] = [];
@@ -20,28 +20,28 @@
 	};
 
 	const reload = () => {
-		fetch('http://localhost:8080/runtime/list', opts)
+		fetch(`${$apiUrl}/runtime/list`, opts)
 			.then((res) => res.json())
 			.then((res) => {
 				runtimes = res;
 			})
 			.catch((err) => console.error(err));
 
-		fetch('http://localhost:8080/function/listinstalled', opts)
+		fetch(`${$apiUrl}/function/listinstalled`, opts)
 			.then((res) => res.json())
 			.then((res) => {
 				allImages = res;
 			})
 			.catch((err) => console.error(err));
 
-		fetch('http://localhost:8080/function/list', opts)
+		fetch(`${$apiUrl}/function/list`, opts)
 			.then((res) => res.json())
 			.then((res) => {
 				deployedFunctions = res.functions || [];
 			})
 			.catch((err) => console.error(err));
 
-		fetch('http://localhost:8080/function/listrunning', opts)
+		fetch(`${$apiUrl}/function/listrunning`, opts)
 			.then((res) => res.text())
 			.then((res) => {
 				let r: Container[] = JSON.parse(res);
@@ -51,7 +51,7 @@
 	};
 
 	const deleteRuntime = (name: string) => {
-		fetch(`http://localhost:8080/runtime/delete/${name}`, {
+		fetch(`${$apiUrl}/runtime/delete/${name}`, {
 			method: 'DELETE',
 			headers: { Authorization: $store || '' }
 		})
@@ -63,7 +63,7 @@
 	const deleteFunctionByTag = (tag: string) => {
 		const fn = deployedFunctions.find((f) => f.tag === tag);
 		if (!fn) return;
-		fetch(`http://localhost:8080/function/delete/${fn.name}`, {
+		fetch(`${$apiUrl}/function/delete/${fn.name}`, {
 			method: 'DELETE',
 			headers: { Authorization: $store || '' }
 		})
@@ -75,7 +75,7 @@
 	const deleteRunningFunction = (container: Container) => {
 		const fn = deployedFunctions.find((f) => f.tag === container.Image);
 		if (!fn) return;
-		fetch(`http://localhost:8080/function/delete/${fn.name}`, {
+		fetch(`${$apiUrl}/function/delete/${fn.name}`, {
 			method: 'DELETE',
 			headers: { Authorization: $store || '' }
 		})

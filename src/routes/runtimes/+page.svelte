@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { store } from '$lib/store';
+	import { store, apiUrl } from '$lib/store';
 	import Icon from '@iconify/svelte';
 
 	let runtimes: string[] = [];
@@ -18,7 +18,7 @@
 	};
 
 	const loadRuntimes = () => {
-		fetch('http://localhost:8080/runtime/list', opts)
+		fetch(`${$apiUrl}/runtime/list`, opts)
 			.then((res) => res.json())
 			.then((res) => {
 				runtimes = res;
@@ -28,7 +28,7 @@
 
 	const showRuntime = (name: string) => {
 		selected = name;
-		fetch(`http://localhost:8080/runtime/show/${name}`, opts)
+		fetch(`${$apiUrl}/runtime/show/${name}`, opts)
 			.then((res) => res.json())
 			.then((res) => {
 				selectedContent = res.content || '';
@@ -37,7 +37,7 @@
 	};
 
 	const deleteRuntime = (name: string) => {
-		fetch(`http://localhost:8080/runtime/delete/${name}`, {
+		fetch(`${$apiUrl}/runtime/delete/${name}`, {
 			method: 'DELETE',
 			headers: { Authorization: $store || '' }
 		})
@@ -63,7 +63,7 @@
 		const formData = new FormData();
 		formData.append('file', newFile[0]);
 
-		fetch(`http://localhost:8080/runtime/upload/${newName}`, {
+		fetch(`${$apiUrl}/runtime/upload/${newName}`, {
 			method: 'POST',
 			headers: { Authorization: $store || '' },
 			body: formData

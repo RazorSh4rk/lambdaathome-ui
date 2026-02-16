@@ -21,11 +21,11 @@
 				<div class="pb-6"></div>
 			</svelte:fragment>
 
-			<AppRailTile bind:group={currentTile} name="Key" value={0} title="Key">
+			<AppRailTile bind:group={currentTile} name="Settings" value={0} title="Settings">
 				<svelte:fragment slot="lead">
 					<a href="/">
-						<Icon icon="mdi:key" width="36" class="m-auto" />
-						<span>Key</span>
+						<Icon icon="mdi:cog" width="36" class="m-auto" />
+						<span>Settings</span>
 					</a>
 				</svelte:fragment>
 			</AppRailTile>

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { store } from '$lib/store';
+	import { store, apiUrl } from '$lib/store';
 	import Icon from '@iconify/svelte';
 
 	let runtimes: string[] = [];
@@ -21,7 +21,7 @@
 	};
 
 	onMount(() => {
-		fetch('http://localhost:8080/runtime/list', opts)
+		fetch(`${$apiUrl}/runtime/list`, opts)
 			.then((res) => res.json())
 			.then((res) => {
 				runtimes = res;
@@ -46,7 +46,7 @@
 		formData.append('volume', volume);
 		formData.append('file', files[0]);
 
-		fetch('http://localhost:8080/function/upload', {
+		fetch(`${$apiUrl}/function/upload`, {
 			method: 'POST',
 			headers: { Authorization: $store || '' },
 			body: formData
